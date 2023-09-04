@@ -3,29 +3,38 @@ function getRandomHexColor() {
     .toString(16)
     .padStart(6, 0)}`;
 }
+const btnCreate = document.querySelector("button[data-create]");
 
-const input = document.querySelector(`#controls input`);
-const buttonCreate = document.querySelector(`[data-create]`);
-const buttonDestroy = document.querySelector(`[data-destroy]`);
-const boxes = document.querySelector(`#boxes`);
+btnCreate.addEventListener("click", () => {
+  const input = document.querySelector("input");
+  let max = Number(input.max);
+  let min = Number(input.min);
+  let step = Number(input.step);
+  let width = 30;
+  let height = 30;
 
-function createBoxes() {
-  let size = boxes.lastChild ? boxes.lastChild.clientWidth + 10 : 30;
-  let arr = [];
-  for (let i = 1; i <= input.value; i++) {
-    let item = document.createElement(`div`);
-    item.style.width = size + "px";
-    item.style.height = size + "px";
-    size += 10;
-    item.style.backgroundColor = getRandomHexColor();
-    arr.push(item);
+  function createBoxes(amount) {
+    if (amount >= min && amount <= max) {
+      for (let i = 1; i <= amount; i += step) {
+        const boxesParent = document.querySelector("#boxes");
+        const boxesChield = document.createElement("div");
+        boxesChield.style.width = `${(width += 10)}px`;
+        boxesChield.style.height = `${(height += 10)}px`;
+        boxesChield.classList.add("boxes-chield");
+        boxesChield.style.backgroundColor = getRandomHexColor();
+        boxesParent.append(boxesChield);
+      }
+    } else {
+      return;
+    }
   }
-  boxes.append(...arr);
-}
+  createBoxes(input.value);
+});
 
-function destroyBoxes() {
-  [...boxes.children].forEach((box) => box.remove());
-}
-
-buttonCreate.addEventListener(`click`, createBoxes);
-buttonDestroy.addEventListener(`click`, destroyBoxes);
+const btnDestroy = document.querySelector("button[data-destroy]");
+btnDestroy.addEventListener("click", () => {
+  const boxesParent = document.querySelector("#boxes"),
+    input = document.querySelector("input");
+  boxesParent.innerHTML = "";
+  input.value = "";
+});
