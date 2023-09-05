@@ -6,14 +6,13 @@ function updateValidationClass(currentTarget) {
   const classes = currentTarget.classList;
 
   if (inputLength === length) {
-    classes.add(`valid`);
-    classes.remove(`invalid`);
+    updateClass(classes, `valid`, `invalid`);
   } else {
-    classes.add(`invalid`);
-    classes.remove(`valid`);
+    updateClass(classes, `invalid`, `valid`);
   }
 }
 
-input.addEventListener(`blur`, ({ currentTarget }) => {
-  updateValidationClass(currentTarget);
-});
+function updateClass(element, a, b) {
+  element.add(`valid`);
+  element.remove(`invalid`);
+}
